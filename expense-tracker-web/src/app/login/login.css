@@ -1,0 +1,121 @@
+/* ===== PAGE ===== */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url('/assets/img5.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== LOGIN CARD ===== */
+.login-card {
+  width: 360px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* ===== LOGO ===== */
+.login-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.logo-img {
+  width: 72px; /* 👈 adjust size here */
+  height: auto;
+}
+
+/* ===== TEXT ===== */
+h2 {
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #222;
+}
+
+.subtitle {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.message {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* ===== INPUTS ===== */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* ===== BUTTONS ===== */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #2d89ef;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+.login-btn:hover {
+  background: #1b68c1;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  color: #2d89ef;
+  border: 2px solid #2d89ef;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background: #2d89ef;
+  color: white;
+}
+
+/* ===== TOGGLE ===== */
+.toggle-text {
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+.toggle-text a {
+  color: #2d89ef;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .login-card {
+    width: 90%;
+  }
+
+  .logo-img {
+    width: 60px;
+  }
+}

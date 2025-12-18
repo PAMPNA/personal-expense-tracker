@@ -1,0 +1,186 @@
+<div class="dashboard" [class.dark]="isDarkMode">
+  <!-- ================= TOP BAR ================= -->
+  <header class="top-bar">
+    <div class="top-left">
+      <img src="assets/img10.webp" alt="Logo" class="dashboard-logo" />
+
+      <div class="brand-text">
+        <h2>Expense Tracker</h2>
+        <span class="tagline">Smart money. Clear insights.</span>
+      </div>
+    </div>
+
+    <div class="top-center">
+      <h1 class="greeting">Hi {{ userName }} 👋</h1>
+      <div class="today-pill">💰 Today ₹{{ todayTotal }}</div>
+    </div>
+
+    <div class="top-right">
+      <button class="dark-toggle-icon" (click)="isDarkMode = !isDarkMode">
+        {{ isDarkMode ? '☀️' : '🌙' }}
+      </button>
+
+      <div class="profile-wrapper">
+        <button class="avatar-btn" (click)="showProfileMenu = !showProfileMenu">
+          {{ userName[0] }}
+        </button>
+
+        <div class="profile-menu" *ngIf="showProfileMenu">
+          <div class="profile-name">Hi {{ userName }}</div>
+          <button class="profile-logout" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= ADD EXPENSE BUTTON ================= -->
+  <button class="add-expense-btn" (click)="showAddForm = true">+ Add Expense</button>
+
+  <div class="success-toast" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- ================= MAIN LAYOUT ================= -->
+  <div class="dashboard-layout">
+    <!-- ================= LEFT PANEL ================= -->
+    <div class="left-panel">
+      <div class="add-expense-card" *ngIf="showAddForm" [class.edit-mode]="editingExpenseId">
+        <!-- ✅ DYNAMIC TITLE -->
+        <h3>{{ editingExpenseId ? 'Edit Expense' : 'Add New Expense' }}</h3>
+
+        <input placeholder="Title" [(ngModel)]="newExpense.title" />
+
+        <input type="number" placeholder="Amount" [(ngModel)]="newExpense.amount" />
+
+        <select [(ngModel)]="newExpense.category">
+          <option value="">Select Category</option>
+          <option *ngFor="let c of categories" [value]="c">
+            {{ c }}
+          </option>
+        </select>
+
+        <input type="date" [(ngModel)]="newExpense.date" />
+
+        <div class="actions">
+          <!-- ✅ SAME SAVE BUTTON FOR ADD + EDIT -->
+          <button class="save" (click)="saveExpense()">Save</button>
+          <button class="cancel" (click)="resetForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= RIGHT PANEL ================= -->
+    <div class="right-panel">
+      <!-- FILTERS -->
+      <div class="filters">
+        <label>
+          Date:
+          <input type="date" [(ngModel)]="selectedDate" />
+        </label>
+
+        <select [(ngModel)]="selectedCategory">
+          <option value="">All Categories</option>
+          <option *ngFor="let c of categories" [value]="c">
+            {{ c }}
+          </option>
+        </select>
+
+        <button (click)="applyFilters()">Apply</button>
+        <button class="reset" (click)="resetFilters()">Reset</button>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-container">
+        <div class="kpi-card">
+          <p>Today</p>
+          <h2>₹{{ todayTotal }}</h2>
+        </div>
+
+        <div class="kpi-card">
+          <p>This Month</p>
+          <h2>₹{{ monthTotal }}</h2>
+        </div>
+
+        <div class="kpi-card">
+          <p>Total</p>
+          <h2>₹{{ overallTotal }}</h2>
+        </div>
+
+        <!-- Selected Pie Slice KPI -->
+        <div class="kpi-card highlight" *ngIf="selectedCategoryName">
+          <p>{{ selectedCategoryName }}</p>
+          <h2>₹{{ selectedCategoryAmount }}</h2>
+        </div>
+      </div>
+
+      <!-- CHART + INSIGHTS -->
+      <div class="chart-grid">
+        <div class="card chart-card">
+          <h3>Category Wise Spending</h3>
+          <canvas baseChart [data]="pieData" [options]="chartOptions" [type]="'pie'"></canvas>
+        </div>
+
+        <div class="card insights-card">
+          <h3>Category Insights</h3>
+
+          <div class="mini-bar" *ngFor="let c of categoryStats">
+            <span>{{ c.name }} (₹{{ c.amount }})</span>
+            <div class="bar">
+              <div class="fill" [style.width.%]="c.percent"></div>
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span>Highest Spend</span>
+            <strong>{{ highestCategory }}</strong>
+          </div>
+
+          <div class="insight-item">
+            <span>Lowest Spend</span>
+            <strong>{{ lowestCategory }}</strong>
+          </div>
+
+          <div class="insight-item">
+            <span>Total Categories</span>
+            <strong>{{ categories.length }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <div class="card">
+    <h3>Recent Expenses</h3>
+
+    <table *ngIf="filteredExpenses.length">
+      <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+
+      <tr
+        *ngFor="let e of filteredExpenses"
+        (click)="selectRow(e)"
+        [class.active-row]="selectedRowId === e._id"
+      >
+        <td>{{ e.title }}</td>
+        <td>{{ e.amount }}</td>
+        <td>{{ e.category }}</td>
+        <td>{{ e.date | date }}</td>
+        <td>
+          <button class="edit" (click)="editExpense(e); $event.stopPropagation()">Edit</button>
+
+          <button class="delete" (click)="deleteExpense(e._id); $event.stopPropagation()">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <p *ngIf="!filteredExpenses.length">No expenses found</p>
+  </div>
+</div>

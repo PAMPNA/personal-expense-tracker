@@ -1,0 +1,56 @@
+<div class="page">
+  <div class="login-card">
+    <!-- LOGO (CENTERED, TOP) -->
+    <div class="login-logo">
+      <img src="assets/img9.jpg" alt="Logo" class="logo-img" />
+    </div>
+
+    <h2>
+      {{ isRegisterMode ? 'Create Account' : 'Expense Tracker Login' }}
+    </h2>
+
+    <p class="subtitle">
+      {{
+        isRegisterMode ? 'Register to start tracking your expenses' : 'Manage your expenses smartly'
+      }}
+    </p>
+
+    <!-- MESSAGE -->
+    <p class="message" *ngIf="message">{{ message }}</p>
+
+    <!-- NAME (REGISTER ONLY) -->
+    <input *ngIf="isRegisterMode" [(ngModel)]="name" placeholder="Full Name" type="text" />
+
+    <!-- EMAIL -->
+    <input [(ngModel)]="email" placeholder="Email" type="email" />
+
+    <!-- PASSWORD -->
+    <input [(ngModel)]="password" placeholder="Password" type="password" />
+
+    <!-- CONFIRM PASSWORD -->
+    <input
+      *ngIf="isRegisterMode"
+      [(ngModel)]="confirmPassword"
+      placeholder="Confirm Password"
+      type="password"
+    />
+
+    <!-- BUTTONS -->
+    <button class="login-btn" *ngIf="!isRegisterMode" (click)="login()">Login</button>
+
+    <button class="register-btn" *ngIf="isRegisterMode" (click)="register()">Register</button>
+
+    <!-- TOGGLE -->
+    <p class="toggle-text">
+      <span *ngIf="!isRegisterMode">
+        New user?
+        <a (click)="switchToRegister()">Create an account</a>
+      </span>
+
+      <span *ngIf="isRegisterMode">
+        Already have an account?
+        <a (click)="switchToLogin()">Login</a>
+      </span>
+    </p>
+  </div>
+</div>
